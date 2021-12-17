@@ -15,7 +15,7 @@ const counter = new prometheus.Counter({
   labelNames: ['path', 'method', 'statusCode']
 })
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
   switch (req.url) {
     case '/':
       // Set label values and increase counter
@@ -28,7 +28,7 @@ const server = http.createServer((req, res) => {
     case '/metrics':
       // Expose service metrics
       res.setHeader('Content-Type', prometheus.contentType)
-      return res.end(prometheus.register.metrics())
+      return res.end(await prometheus.register.metrics())
 
     default:
       res.statusCode = 404

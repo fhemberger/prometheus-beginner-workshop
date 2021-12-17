@@ -4,6 +4,6 @@
   "private": true,
   "version": "1.0.0",
   "dependencies": {
-    "prom-client": "^10.2.2"
+    "prom-client": "14.0.1"
   }
 }
