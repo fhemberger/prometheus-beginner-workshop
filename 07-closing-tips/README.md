@@ -19,5 +19,5 @@ Although they don't contain sensitive data, you may want to block outside access
 
 ## Useful links
 
-- [Prometheus Documenation](https://prometheus.io/docs/)
+- [Prometheus Documentation](https://prometheus.io/docs/)
 - [Robust Perception Blog](https://www.robustperception.io/tag/prometheus/)

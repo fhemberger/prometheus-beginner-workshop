@@ -20,7 +20,7 @@ level=info ts=2018-01-08T09:02:06.828457152Z caller=main.go:394 msg="Loading con
 level=info ts=2018-01-08T09:02:06.828600133Z caller=main.go:371 msg="Server is ready to receive requests."
 ```
 
-Prometheus automatically looks for a configuration file `prometheus.yml` in the current directory and create a `data` directory there with its time series database.
+Prometheus automatically looks for a configuration file `prometheus.yml` in the current directory and creates a `data` directory in the same place for its time series database.
 
 If your config file has a different name or location, run Prometheus with the `--config.file=<filename>` instead.
 
@@ -36,7 +36,7 @@ This is the main page where we can query information from the time series databa
 > The Prometheus team focuses on what's most important: Providing a highly performant and reliable way for metrics collection. So they avoid bundling stuff  that has been already solved for ages by other tools or which highly depends on your specific environment:
 >
 > - No fancy interface (we'll come to that in [chapter 6](../06-dashboards/))
-> - No HTTPS for the web interface (use a reverse proxy like HAProxy, nginx, etc.)
+> - Default protocol for the web-interface is HTTP (HTTPS is supported in Prometheus, node_exporter, etc. but not in all exporters. You can use a reverse proxy like HAProxy, nginx, etc. instead.)
 > - No authentication/authorization (use OAuth, LDAP, etc.)
 
 
@@ -44,7 +44,7 @@ For now, let's head to _Status > Configuration_. This is the most basic config (
 
 ![Prometheus configuration](./_images/localhost_9090_config.png)
 
-Prometheus will check each target every minute for new data (`scrape_interval`).
+By default, Prometheus will check each target every minute for new data (`scrape_interval`).
 
 For a better target overview, go to _Status > Targets_:
 
@@ -61,10 +61,12 @@ There is already a long list of [exporters](https://prometheus.io/docs/instrumen
 
 There are four types of metrics Prometheus supports:
 
-- **Counter**: A simple numeric value that only goes up
-- **Gauge**: Like a counter, but can go up and down
-- **Histogram**: Observations (usually things like request durations or response sizes) counted in configurable buckets
-- **Summary**: Similar to a Histogram, but calculates configurable quantiles
+- **Counter**: A simple numeric value that only goes up (monotonically increasing) and is set to zero on restart. Used for metrics like number of requests served, tasks completed, or errors.
+- **Gauge**: Similar to a counter, but can increase in decrease in value. For temperatures, current requests served but also for storage, CPU or memory usage. 
+- **[Histogram](https://en.wikipedia.org/wiki/Histogram)**: Observations (usually things like request durations or response sizes) counted in configurable buckets. It also provides a sum of all observed values.
+- **Summary**: Similar to a histogram, but calculates configurable quantiles. It calculates configurable quantiles over a sliding time window.
+
+There is a great [explanation of histograms and summaries](https://prometheus.io/docs/practices/histograms/) on the Prometheus website.
 
 
 ## What a metric looks like
@@ -81,5 +83,3 @@ up{instance="localhost:9090",job="prometheus"}	 1
 ```
 
 In the following parts, we will use a mixture of metric names, labels and functions to retrieve information from Prometheus.
-
-
