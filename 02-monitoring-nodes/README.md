@@ -36,22 +36,22 @@ My machine has a quad-core processor, so `node_cpu_seconds_total` looks like thi
 ```
 # HELP node_cpu Seconds the cpus spent in each mode.
 # TYPE node_cpu counter
-node_cpu{cpu="cpu0",mode="idle"} 635440.4140625
-node_cpu{cpu="cpu0",mode="nice"} 0
-node_cpu{cpu="cpu0",mode="system"} 91017.9921875
-node_cpu{cpu="cpu0",mode="user"} 133122.078125
-node_cpu{cpu="cpu1",mode="idle"} 770150.359375
-node_cpu{cpu="cpu1",mode="nice"} 0
-node_cpu{cpu="cpu1",mode="system"} 28714.6640625
-node_cpu{cpu="cpu1",mode="user"} 60700.328125
-node_cpu{cpu="cpu2",mode="idle"} 659410.6171875
-node_cpu{cpu="cpu2",mode="nice"} 0
-node_cpu{cpu="cpu2",mode="system"} 66238.21875
-node_cpu{cpu="cpu2",mode="user"} 133917.1796875
-node_cpu{cpu="cpu3",mode="idle"} 765506.1328125
-node_cpu{cpu="cpu3",mode="nice"} 0
-node_cpu{cpu="cpu3",mode="system"} 30556.484375
-node_cpu{cpu="cpu3",mode="user"} 63502.09375
+node_cpu_seconds_total{cpu="cpu0",mode="idle"} 635440.4140625
+node_cpu_seconds_total{cpu="cpu0",mode="nice"} 0
+node_cpu_seconds_total{cpu="cpu0",mode="system"} 91017.9921875
+node_cpu_seconds_total{cpu="cpu0",mode="user"} 133122.078125
+node_cpu_seconds_total{cpu="cpu1",mode="idle"} 770150.359375
+node_cpu_seconds_total{cpu="cpu1",mode="nice"} 0
+node_cpu_seconds_total{cpu="cpu1",mode="system"} 28714.6640625
+node_cpu_seconds_total{cpu="cpu1",mode="user"} 60700.328125
+node_cpu_seconds_total{cpu="cpu2",mode="idle"} 659410.6171875
+node_cpu_seconds_total{cpu="cpu2",mode="nice"} 0
+node_cpu_seconds_total{cpu="cpu2",mode="system"} 66238.21875
+node_cpu_seconds_total{cpu="cpu2",mode="user"} 133917.1796875
+node_cpu_seconds_total{cpu="cpu3",mode="idle"} 765506.1328125
+node_cpu_seconds_total{cpu="cpu3",mode="nice"} 0
+node_cpu_seconds_total{cpu="cpu3",mode="system"} 30556.484375
+node_cpu_seconds_total{cpu="cpu3",mode="user"} 63502.09375
 ```
 
 You can use the Prometheus interface to query for this specific metric:
@@ -68,18 +68,18 @@ But an absolute, always increasing counter doesn't help us in this case. CPU usa
 We're looking for per-second instant rate (_irate_) of increase of our `node_cpu_seconds_total` counter over a period of time (let's say the last five minutes). And as we're looking for a percentage, we multiply the result with 100.
 
 ```
-irate(node_cpu[5m]) * 100
+irate(node_cpu_seconds_total[5m]) * 100
 ```
 
-![Query for `irate(node_cpu[5m]) * 100`](./_images/localhost_9090_graph2.png)
+![Query for `irate(node_cpu_seconds_total[5m]) * 100`](./_images/localhost_9090_graph2.png)
 
 Ok, so `cpu0` spent 24.7% in `idle` mode during that time. Interesting, but still a bit impractical. Usually, when you're looking at CPU usage, you're not interested in the single cores, but want to treat it as one unit. We are looking for the _average_ of these metrics, but _without_ the label _cpu_:
 
 ```
-avg without (cpu) (irate(node_cpu[5m])) * 100
+avg without (cpu) (irate(node_cpu_seconds_total[5m])) * 100
 ```
 
-![Query for `avg without (cpu) (irate(node_cpu[5m])) * 100`](./_images/localhost_9090_graph3a.png)
+![Query for `avg without (cpu) (irate(node_cpu_seconds_total[5m])) * 100`](./_images/localhost_9090_graph3a.png)
 
 Nice, this is already way handier. You can also view the results in the »Graph« view:
 

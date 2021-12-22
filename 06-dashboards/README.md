@@ -24,10 +24,10 @@ In this case, we define a variable `server` which matches the `instance`, but wi
 
 ```
 // CPU usage by CPU core in percent
-100 - (avg by (cpu) (irate(node_cpu{mode="idle", instance=~"$server"}[5m])) * 100)
+100 - (avg by (cpu) (irate(node_cpu_seconds_total{mode="idle", instance=~"$server"}[5m])) * 100)
 
 // Total CPU usage by mode
-sum by (mode) (irate(node_cpu{mode!="idle",instance=~"$server:.*"}[5m])) / scalar(count(node_cpu{mode="idle",instance=~"$server:.*"}))
+sum by (mode) (irate(node_cpu_seconds_total{mode!="idle",instance=~"$server:.*"}[5m])) / scalar(count(node_cpu_seconds_total{mode="idle",instance=~"$server:.*"}))
 ```
 
 
@@ -42,10 +42,10 @@ node_load5{instance=~"$server:.*"}
 node_load15{instance=~"$server:.*"}
 
 // logical CPUs
-sum(count(node_cpu{job="node_exporter",mode="idle",instance=~"$server:.*"}) by (cpu))
+sum(count(node_cpu_seconds_total{job="node_exporter",mode="idle",instance=~"$server:.*"}) by (cpu))
 
 // physical CPUs (if host has Hyper-Threading)
-sum(count(node_cpu{job="node_exporter",mode="idle",instance=~"$server:.*"}) by (cpu))/2
+sum(count(node_cpu_seconds_total{job="node_exporter",mode="idle",instance=~"$server:.*"}) by (cpu))/2
 ```
 
 
