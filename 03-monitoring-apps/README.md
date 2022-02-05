@@ -19,13 +19,13 @@ Reload the website a couple of times, if you look at http://localhost:4000/metri
 ```
 # HELP demo_website_loaded Counts how many times the website has been loaded
 # TYPE demo_website_loaded counter
-demo_website_loaded{path="/",method="GET",statusCode="200"} 12
-demo_website_loaded{path="/favicon.ico",method="GET",statusCode="404"} 1
+demo_website_loaded{path="/",method="GET",statusCode="200"} 7
+demo_website_loaded{path="/favicon.ico",method="GET",statusCode="404"} 3
 ```
 
 Which now also ends up in Prometheus:
 
-![Custom metrics from our Node.js application](./_images/localhost_9090_graph.png)
+![Custom metrics from our Node.js application](./_images/prometheus_custom_metrics.png)
 
 You could track application requests this way or total and failed logins (a good way to determine if something fishy is going on), track the overall error rate (Did the number of HTTP 500 errors raise after the last deployment?) or any other metric critical for your business.
 

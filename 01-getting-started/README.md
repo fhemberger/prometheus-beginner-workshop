@@ -26,7 +26,7 @@ If your config file has a different name or location, run Prometheus with the `-
 
 Open up your browser at `http://localhost:9090` for the Prometheus web interface:
 
-![Prometheus main query interface](./_images/localhost_9090_graph.png)
+![Prometheus main query interface](./_images/prometheus_graph.png)
 
 This is the main page where we can query information from the time series database in the next chapters.
 
@@ -42,15 +42,15 @@ This is the main page where we can query information from the time series databa
 
 For now, let's head to _Status > Configuration_. This is the most basic config (and some defaults) we've just loaded:
 
-![Prometheus configuration](./_images/localhost_9090_config.png)
+![Prometheus configuration](./_images/prometheus_config.png)
 
 By default, Prometheus will check each target every minute for new data (`scrape_interval`).
 
 For a better target overview, go to _Status > Targets_:
 
-![Prometheus scraping targets](./_images/localhost_9090_targets.png)
+![Prometheus scraping targets](./_images/prometheus_targets.png)
 
-So there is one target called 'prometheus', the data is scraped from `http://localhost:9090/metrics`, successfully last time 4.45 seconds ago. The simple metric `up` is a quick indicator to check if a scraping target is available.
+So there is one target called 'prometheus', the data is scraped from `http://localhost:9090/metrics`, successfully last time 2.37 seconds ago. The simple metric `up` is a quick indicator to check if a scraping target is available.
 
 I encourage you to look at the raw metrics format exposed at the URL above, because that's really the cool thing about Prometheus: **Every system or application** which can expose a website with this plain text metric format can be processed by Prometheus, **no matter which programming language is used** to produce the result.
 

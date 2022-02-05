@@ -34,8 +34,8 @@ Now taking the output of `http://localhost:9100/metrics`, let's take a look at a
 My machine has a quad-core processor, so `node_cpu_seconds_total` looks like this:
 
 ```
-# HELP node_cpu Seconds the cpus spent in each mode.
-# TYPE node_cpu counter
+# HELP node_cpu_seconds_total Seconds the cpus spent in each mode.
+# TYPE node_cpu_seconds_total counter
 node_cpu_seconds_total{cpu="cpu0",mode="idle"} 635440.4140625
 node_cpu_seconds_total{cpu="cpu0",mode="nice"} 0
 node_cpu_seconds_total{cpu="cpu0",mode="system"} 91017.9921875
@@ -56,7 +56,7 @@ node_cpu_seconds_total{cpu="cpu3",mode="user"} 63502.09375
 
 You can use the Prometheus interface to query for this specific metric:
 
-![Query for `node_cpu_seconds_total`](./_images/localhost_9090_graph.png)
+![Query for `node_cpu_seconds_total`](./_images/prometheus_graph_node_cpu_seconds_total.png)
 
 While the overall metric is always called `node_cpu_seconds_total`, it is split up by _labels_ (here 'cpu' and 'mode') into more detail. You also see that the numbers have increased in the screenshot. The type of metric is a counter, so the value increases over time.
 
@@ -71,19 +71,19 @@ We're looking for per-second instant rate (_irate_) of increase of our `node_cpu
 irate(node_cpu_seconds_total[5m]) * 100
 ```
 
-![Query for `irate(node_cpu_seconds_total[5m]) * 100`](./_images/localhost_9090_graph2.png)
+![Query for `irate(node_cpu_seconds_total[5m]) * 100`](./_images/prometheus_graph_irate_node_cpu_seconds_total.png)
 
-Ok, so `cpu0` spent 24.7% in `idle` mode during that time. Interesting, but still a bit impractical. Usually, when you're looking at CPU usage, you're not interested in the single cores, but want to treat it as one unit. We are looking for the _average_ of these metrics, but _without_ the label _cpu_:
+Ok, so `cpu0` spent 75.5% in `idle` mode during that time. Interesting, but still a bit impractical. Usually, when you're looking at CPU usage, you're not interested in the single cores, but want to treat it as one unit. We are looking for the _average_ of these metrics, but _without_ the label _cpu_:
 
 ```
 avg without (cpu) (irate(node_cpu_seconds_total[5m])) * 100
 ```
 
-![Query for `avg without (cpu) (irate(node_cpu_seconds_total[5m])) * 100`](./_images/localhost_9090_graph3a.png)
+![Query for `avg without (cpu) (irate(node_cpu_seconds_total[5m])) * 100`](./_images/prometheus_graph_avg_node_cpu_seconds_total.png)
 
 Nice, this is already way handier. You can also view the results in the »Graph« view:
 
-![Graph view](./_images/localhost_9090_graph3b.png)
+![Graph view](./_images/prometheus_graph_avg_node_cpu_seconds_total_graph.png)
 
 Go ahead and try a few other metrics like:
 
